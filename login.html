@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMPLOYTIC - Email Template</title>
+</head>
+
+<body style="margin:0;padding:30px 15px;background:#f4f7fa;font-family:Arial,sans-serif;color:#333;">
+
+<div style="max-width:650px;margin:20px auto;background:white;padding:30px;border-radius:16px;box-shadow:0 5px 20px #00000010;">
+
+    <div style="text-align:center;margin-bottom:30px;">
+        <h1 style="color:#2566D6;margin-bottom:8px;">EMPLOYTIC</h1>
+        <p style="color:#666;">Email Template Preview</p>
+    </div>
+
+    <form id="emailForm">
+
+        <label for="name">Recipient Name</label>
+        <input id="name" type="text" required
+               placeholder="Enter recipient name"
+               style="width:100%;box-sizing:border-box;padding:12px;margin:8px 0 18px;border:1px solid #ccc;border-radius:7px;">
+
+        <label for="organizationName">Organization Name</label>
+        <input id="organizationName" type="text" required
+               placeholder="Enter organization name"
+               style="width:100%;box-sizing:border-box;padding:12px;margin:8px 0 18px;border:1px solid #ccc;border-radius:7px;">
+
+        <label for="organizationCode">Organization Code</label>
+        <input id="organizationCode" type="text" required
+               placeholder="Enter organization code"
+               style="width:100%;box-sizing:border-box;padding:12px;margin:8px 0 18px;border:1px solid #ccc;border-radius:7px;">
+
+        <label for="companyName">Company Name</label>
+        <input id="companyName" type="text" required
+               placeholder="Enter company name"
+               style="width:100%;box-sizing:border-box;padding:12px;margin:8px 0 18px;border:1px solid #ccc;border-radius:7px;">
+
+        <label for="companyCode">Company Code</label>
+        <input id="companyCode" type="text" required
+               placeholder="Enter company code"
+               style="width:100%;box-sizing:border-box;padding:12px;margin:8px 0 18px;border:1px solid #ccc;border-radius:7px;">
+
+        <label for="email">Recipient Email</label>
+        <input id="email" type="email" required
+               placeholder="Enter recipient email"
+               style="width:100%;box-sizing:border-box;padding:12px;margin:8px 0 18px;border:1px solid #ccc;border-radius:7px;">
+
+        <label for="loginUrl">Login URL</label>
+        <input id="loginUrl" type="url" required
+               placeholder="https://your-domain.com/login"
+               style="width:100%;box-sizing:border-box;padding:12px;margin:8px 0 22px;border:1px solid #ccc;border-radius:7px;">
+
+        <button type="submit"
+                style="width:100%;padding:14px;background:#2566D6;color:white;border:0;border-radius:8px;font-size:16px;cursor:pointer;">
+            Preview Email
+        </button>
+
+    </form>
+</div>
+
+<section id="preview" style="display:none;max-width:650px;margin:25px auto;background:white;border-radius:12px;overflow:hidden;box-shadow:0 5px 20px #00000010;">
+
+    <div style="padding:25px;background:#2566D6;color:white;">
+        <h2 style="margin:0;">EMPLOYTIC</h2>
+        <p style="margin:8px 0 0;">Your account information</p>
+    </div>
+
+    <div style="padding:28px;line-height:1.7;">
+        <h2 id="previewGreeting"></h2>
+
+        <p>Welcome to EMPLOYTIC! Your organization and company details are below.</p>
+
+        <p><strong>Organization:</strong> <span id="previewOrg"></span></p>
+        <p><strong>Organization Code:</strong> <span id="previewOrgCode"></span></p>
+        <p><strong>Company:</strong> <span id="previewCompany"></span></p>
+        <p><strong>Company Code:</strong> <span id="previewCompanyCode"></span></p>
+
+        <p>Use the button below to access your account.</p>
+
+        <a id="previewLogin" href="#"
+           style="display:inline-block;padding:14px 24px;background:#2566D6;color:white;text-decoration:none;border-radius:7px;font-weight:bold;">
+            Access Your Account
+        </a>
+
+        <p style="margin-top:30px;color:#777;font-size:13px;">
+            This email was prepared by EMPLOYTIC. Please contact your organization administrator if you need assistance.
+        </p>
+    </div>
+
+    <div style="padding:20px;text-align:center;background:#f1f5fb;color:#666;font-size:12px;">
+        EMPLOYTIC | Human Resources Management
+    </div>
+</section>
+
+<script>
+    document.getElementById("emailForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const name = document.getElementById("name").value.trim();
+        const organizationName = document.getElementById("organizationName").value.trim();
+        const organizationCode = document.getElementById("organizationCode").value.trim();
+        const companyName = document.getElementById("companyName").value.trim();
+        const companyCode = document.getElementById("companyCode").value.trim();
+        const loginUrl = document.getElementById("loginUrl").value.trim();
+        
+        localStorage.setItem("organizationName", organizationName);
+        localStorage.setItem("organizationCode", organizationCode);
+        localStorage.setItem("companyName", companyName);
+        localStorage.setItem("companyCode", companyCode);
+        localStorage.setItem("recipientName", name);
+        localStorage.setItem("loginUrl", loginUrl);
+
+        try {
+            const url = new URL(loginUrl);
+            if (url.protocol !== "https:" && url.protocol !== "http:") {
+                throw new Error("Invalid URL protocol");
+            }
+        } catch {
+            alert("Please enter a valid HTTP or HTTPS login URL.");
+            return;
+        }
+
+        document.getElementById("previewGreeting").textContent = "Hello, " + name + "!";
+        document.getElementById("previewOrg").textContent = organizationName;
+        document.getElementById("previewOrgCode").textContent = organizationCode;
+        document.getElementById("previewCompany").textContent = companyName;
+        document.getElementById("previewCompanyCode").textContent = companyCode;
+
+        const loginButton = document.getElementById("previewLogin");
+        loginButton.href = loginUrl;
+
+        document.getElementById("preview").style.display = "block";
+        document.getElementById("preview").scrollIntoView({ behavior: "smooth" });
+    });
+</script>
+
+</body>
+</html>
